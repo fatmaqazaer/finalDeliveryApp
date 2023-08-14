@@ -1,0 +1,36 @@
+.invoice-list-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    margin-bottom: 20px;
+  }
+  
+  .table-container {
+    margin-bottom: 20px;
+    justify-content: center;
+    width:'60%'
+  }
+  
+  .Text {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  @media print {
+    @page {
+      size: auto; 
+      margin: 0mm;
+    }
+    
+    body {
+      margin: 0; 
+    }
+  }
