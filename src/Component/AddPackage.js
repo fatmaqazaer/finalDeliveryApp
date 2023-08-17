@@ -1,31 +1,37 @@
-import React, { useContext, useState } from 'react';
-import { Dialog, DialogContent, DialogTitle, TextField, Button, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
-import { AppContext } from '../context/AppContext';
+import React, { useContext, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  Button,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
+import { AppContext } from "../context/AppContext";
 
 function AddPackage({ isOpen, onClose, onAddPackage }) {
   const { appData } = useContext(AppContext);
 
-
   const getRandomId = () => {
     return Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
   };
-  
-  const [newPackage, setNewPackage] = useState({
-    customerid : 0,
-    weight: 0,
-    price: 0,
-    shippingOrder: 0,
+
+  const initialPackageState = {
+    customerid: appData.customers.length > 0 ? appData.customers[0].id : "",
+    weight: "",
+    price: "",
+    shippingOrder: "",
     id: getRandomId(),
-  });
+  };
+
+  const [newPackage, setNewPackage] = useState(initialPackageState);
+
   const handleAddClick = () => {
     onAddPackage(newPackage);
-    setNewPackage({
-      customerid : 0,
-      weight: 0,
-      price: 0,
-      shippingOrder: 0,
-      id: getRandomId(),
-        });
+    setNewPackage(initialPackageState); // Reset to initial state
     onClose();
   };
 
@@ -43,9 +49,11 @@ function AddPackage({ isOpen, onClose, onAddPackage }) {
         <FormControl fullWidth margin="normal">
           <InputLabel htmlFor="customer-name">Customer Name</InputLabel>
           <Select
-            value={newPackage.customerName}
-            onChange={(e) => setNewPackage({ ...newPackage, customerid: e.target.value })}
-            inputProps={{ id: 'customer-name' }}
+             value={newPackage.customerid}
+            onChange={(e) =>
+              setNewPackage({ ...newPackage, customerid: e.target.value })
+            }
+            inputProps={{ id: "customer-name" }}
           >
             {appData.customers.map((customer) => (
               <MenuItem key={customer.id} value={customer.id}>
@@ -57,21 +65,27 @@ function AddPackage({ isOpen, onClose, onAddPackage }) {
         <TextField
           label="Weight"
           value={newPackage.weight}
-          onChange={(e) => setNewPackage({ ...newPackage, weight: e.target.value })}
+          onChange={(e) =>
+            setNewPackage({ ...newPackage, weight: e.target.value })
+          }
           fullWidth
           margin="normal"
         />
         <TextField
           label="Price"
           value={newPackage.price}
-          onChange={(e) => setNewPackage({ ...newPackage, price: e.target.value })}
+          onChange={(e) =>
+            setNewPackage({ ...newPackage, price: e.target.value })
+          }
           fullWidth
           margin="normal"
         />
         <TextField
           label="Shipping Order"
           value={newPackage.shippingOrder}
-          onChange={(e) => setNewPackage({ ...newPackage, shippingOrder: e.target.value })}
+          onChange={(e) =>
+            setNewPackage({ ...newPackage, shippingOrder: e.target.value })
+          }
           fullWidth
           margin="normal"
         />

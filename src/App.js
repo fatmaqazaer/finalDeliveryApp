@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext} from "react";
 import { AppContext } from "./context/AppContext";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
@@ -18,12 +18,14 @@ import PackageList from "./Component/PackageList";
 import { AppProvider } from "./context/AppContext";
 import Invoice from "./Component/Invoice";
 import InvoiceList from "./Component/InvoiceList";
-
+import SnackbarComponent from "./context/SnackbarComponent";
+import { SnackbarProvider } from "./context/SnackbarContext";
 
 function App() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const { isLoading } = useContext(AppContext);
+
   return (
+    <SnackbarProvider>
     <AppProvider>
       <div className="App">
         <Router>
@@ -46,8 +48,6 @@ function App() {
               </Toolbar>
             </AppBar>
           </Box>
-
-          {/* Use the isDrawerOpen state to control the visibility of the Drawer */}
           <Drawer
             anchor="left"
             open={isDrawerOpen}
@@ -68,9 +68,6 @@ function App() {
               </ListItem>
             </List>
           </Drawer>
-          {isLoading ? (
-            <div>Loading...</div>
-          ) : (
             <Switch>
               <Route path="/customers">
                 <CustomerList />
@@ -85,10 +82,12 @@ function App() {
                 <Invoice />
               </Route>
             </Switch>
-          )}
         </Router>
       </div>
     </AppProvider>
+    <SnackbarComponent 
+    />
+    </SnackbarProvider>
   );
 }
 

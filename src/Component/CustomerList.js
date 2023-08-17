@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext} from "react";
 import {
   Button,
   Table,
@@ -13,7 +13,7 @@ import { AppContext } from "../context/AppContext";
 import { Link } from "react-router-dom";
 
 function CustomerList() {
-  const { appData, deleteCustomer } = useContext(AppContext);
+  const { appData, deleteCustomer ,handleCreateInvoice} = useContext(AppContext);
   const customers = appData.customers || [];
 
   return (
@@ -42,6 +42,7 @@ function CustomerList() {
                   variant="contained"
                   component={Link}
                   to={`/invoice/${row.id}`}
+                  onClick={() => handleCreateInvoice(row.id)}
                 >
                   Create Invoice
                 </Button>
@@ -49,7 +50,8 @@ function CustomerList() {
               <TableCell>
                 <Button
                   variant="contained"
-                  onClick={() => deleteCustomer(row.id)}>                
+                  onClick={() => deleteCustomer(row.id)}
+                >
                   Delete
                 </Button>
               </TableCell>

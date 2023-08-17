@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState} from "react";
 import {
   Table,
   TableBody,
@@ -11,51 +11,18 @@ import {
   Button,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { AppContext } from "../context/AppContext";
+import { AppContext } from '../context/AppContext';
 import AddPackage from "./AddPackage";
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 
 function PackageList() {
-  const { appData, addPackage, CustomerData } = useContext(AppContext);
-
-  const packages = appData.packages;
-  //add new package
+  const {
+    appData,
+    handleAddPackage,
+    moveRow,
+  } = useContext(AppContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const [sortedPackages, setSortedPackages] = useState([...packages]);
-
-  // Add new package
-  const handleAddPackage = (newPackage) => {
-    const updatedPackages = [...sortedPackages, newPackage];
-    const packagesWithUpdatedShippingOrder =
-      updateShippingOrder(updatedPackages);
-    setSortedPackages(packagesWithUpdatedShippingOrder);
-    addPackage(newPackage);
-    console.log(newPackage);
-  };
-
-  //handle Up and down buttons for packages
-  const updateShippingOrder = (packages) => {
-    return packages.map((pkg, index) => {
-      return { ...pkg, shippingOrder: index + 1 };
-    });
-  };
-
-  const moveRow = (currentIndex, newIndex) => {
-    if (newIndex < 0) {
-      newIndex = 0;
-    }
-    if (newIndex >= sortedPackages.length) {
-      newIndex = sortedPackages.length - 1;
-    }
-
-    const updatedPackages = [...sortedPackages];
-    const [movedItem] = updatedPackages.splice(currentIndex, 1);
-    updatedPackages.splice(newIndex, 0, movedItem);
-    const packagesWithUpdatedShippingOrder =
-      updateShippingOrder(updatedPackages);
-    setSortedPackages(packagesWithUpdatedShippingOrder);
-  };
+  const packages = appData.packages;
   return (
     <TableContainer component={Paper}>
       <Table
@@ -83,7 +50,7 @@ function PackageList() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {sortedPackages.map((row, currentIndex) => (
+          {packages.map((row, currentIndex) => (
             <TableRow
               key={row.id}
               sx={{
@@ -95,11 +62,12 @@ function PackageList() {
               <TableCell component="th" scope="row">
                 {row.id}
               </TableCell>
-              <TableCell>{CustomerData[row.customerid]}</TableCell>
+              <TableCell>
+                {row.id ? appData.customerObj[row.customerid] : ""}
+              </TableCell>
               <TableCell>{row.weight}</TableCell>
               <TableCell>{row.price}</TableCell>
               <TableCell>{row.shippingOrder}</TableCell>
-
               <TableCell>
                 <Button
                   size="small"
@@ -116,7 +84,7 @@ function PackageList() {
                   variant="outlined"
                   color="primary"
                   onClick={() => moveRow(currentIndex, currentIndex + 1)}
-                  disabled={currentIndex === sortedPackages.length - 1}
+                  disabled={currentIndex === packages.length - 1}
                 >
                   <ArrowDownward />
                 </Button>
